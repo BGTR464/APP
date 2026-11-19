@@ -415,8 +415,8 @@ class MainActivity : Activity() {
 
                 tess.setImage(bitmap)
 
-                val recognizedText =
-                    tess.getUTF8Text() ?: ""
+val recognizedText = tess.getUTF8Text() ?: ""
+android.util.Log.d("OCR_RESULT", "זוהה טקסט: $recognizedText")                    tess.getUTF8Text() ?: ""
 
                 bitmap.recycle()
 
