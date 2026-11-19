@@ -42,7 +42,7 @@ class MainActivity : Activity() {
         input = EditText(this).apply {
             hint = "כתוב מוצר להוספה..."
             textSize = 18f
-            singleLine = true
+           isSingleLine = true
         }
         root.addView(input)
 
