@@ -272,8 +272,7 @@ class MainActivity : Activity() {
             }
         }
     }
-
-    private fun scanReceipt(uri: Uri) {
+     private fun scanReceipt(uri: Uri) {
         scanButton.isEnabled = false
         scanButton.text = "מזהה את הקבלה..."
 
@@ -307,14 +306,11 @@ class MainActivity : Activity() {
                 if (!tess.init(dataPath.absolutePath, "heb")) {
                     throw Exception("לא ניתן להפעיל זיהוי בעברית")
                 }
-
-tess.setPageSegMode(TessBaseAPI.PageSegMode.PSM_SINGLE_BLOCK)                tess.setImage(bitmap)
-
+                tess.setPageSegMode(6)
+                tess.setImage(bitmap)
                 val recognizedText = tess.getUTF8Text() ?: ""
-
                 val imageWidth = bitmap.width
                 val imageHeight = bitmap.height
-
                 runOnUiThread {
                     scanButton.isEnabled = true
                     scanButton.text = "סרוק קבלה"
