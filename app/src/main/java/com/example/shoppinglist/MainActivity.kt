@@ -281,7 +281,7 @@ class MainActivity : Activity() {
         AlertDialog.Builder(this)
             .setTitle("תוצאות סריקת הקבלה")
             .setView(innerScroll)
-            .setPositiveButton("אשר מוצרים שנקנו") { _, _ ->
+         .setPositiveButton("אשר מוצרים שנקנו") { dialog: android.content.DialogInterface, which: Int ->
                 checkboxes.forEach { (index, check) ->
                     items[index] = items[index].first to check.isChecked
                 }
