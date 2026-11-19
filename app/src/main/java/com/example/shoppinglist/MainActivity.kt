@@ -308,8 +308,7 @@ class MainActivity : Activity() {
                     throw Exception("לא ניתן להפעיל זיהוי בעברית")
                 }
 
-                tess.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO)
-                tess.setImage(bitmap)
+tess.setPageSegMode(TessBaseAPI.PageSegMode.PSM_SINGLE_BLOCK)                tess.setImage(bitmap)
 
                 val recognizedText = tess.getUTF8Text() ?: ""
 
