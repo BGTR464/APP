@@ -279,9 +279,10 @@ class MainActivity : Activity() {
 
         Thread {
             var tess: TessBaseAPI? = null
+            var bitmap: android.graphics.Bitmap? = null
 
             try {
-                val bitmap = contentResolver.openInputStream(uri)?.use {
+                bitmap = contentResolver.openInputStream(uri)?.use {
                     BitmapFactory.decodeStream(it)
                 } ?: throw Exception("לא ניתן לקרוא את התמונה")
 
@@ -291,12 +292,14 @@ class MainActivity : Activity() {
 
                 val hebFile = File(tessData, "heb.traineddata")
 
-                if (!hebFile.exists()) {
-                    assets.open("tessdata/heb.traineddata").use { input ->
-                        FileOutputStream(hebFile).use { output ->
-                            input.copyTo(output)
-                        }
+                assets.open("tessdata/heb.traineddata").use { input ->
+                    FileOutputStream(hebFile).use { output ->
+                        input.copyTo(output)
                     }
+                }
+
+                if (!hebFile.exists() || hebFile.length() < 1000000) {
+                    throw Exception("קובץ השפה העברית חסר או קטן מדי")
                 }
 
                 tess = TessBaseAPI()
@@ -310,7 +313,8 @@ class MainActivity : Activity() {
 
                 val recognizedText = tess.getUTF8Text() ?: ""
 
-                bitmap.recycle()
+                val imageWidth = bitmap.width
+                val imageHeight = bitmap.height
 
                 runOnUiThread {
                     scanButton.isEnabled = true
@@ -321,7 +325,9 @@ class MainActivity : Activity() {
                             .setTitle("בדיקת סריקה")
                             .setMessage(
                                 "לא זוהה טקסט בתמונה.\n\n" +
-                                "אורך הטקסט שזוהה: ${recognizedText.length}"
+                                "אורך הטקסט: ${recognizedText.length}\n" +
+                                "גודל התמונה: ${imageWidth} x ${imageHeight}\n" +
+                                "גודל קובץ השפה: ${hebFile.length() / 1024} KB"
                             )
                             .setPositiveButton("סגור", null)
                             .show()
@@ -343,6 +349,7 @@ class MainActivity : Activity() {
                 }
 
             } finally {
+                bitmap?.recycle()
                 tess?.recycle()
             }
 
